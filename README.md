@@ -82,11 +82,3 @@ link back with us.
 
 We will take a look as soon as we can and if you are successful at this stage your task
 solution will form the basis of the technical part of the interview stage.
-
-- We'll begin by getting you to talk through your solution. There is no expected
-  structure to this, we're interested in how you think about code and how you
-  communicate what you've done.
-- We may ask you to explain how you would approach a new requirement or solve a
-  specific problem in your solution. This will not be a live coding exercise, but we
-  will expect you to be able to comprehensively describe what steps you would take in
-  the context of your current solution.
