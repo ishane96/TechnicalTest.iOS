@@ -1,0 +1,75 @@
+
+[
+  {
+    "id": 0,
+    "startDate": "2022-05-28T04:39:06.470Z",
+    "days": 9,
+    "absenceType": "SICKNESS",
+    "employee": {
+      "firstName": "Rahaf",
+      "lastName": "Deckard",
+      "id": "2ea05a52-4e31-450d-bbc4-5a6c73167d17"
+    },
+    "approved": true
+  },
+  {
+    "id": 4,
+    "startDate": "2023-05-08T07:46:20.745Z",
+    "days": 1,
+    "absenceType": "ANNUAL_LEAVE",
+    "employee": {
+      "firstName": "Jabez",
+      "lastName": "Nasser",
+      "id": "24a9352b-cf35-4e00-b4c9-403546d7bea8"
+    },
+    "approved": true
+  },
+  {
+    "id": 5,
+    "startDate": "2020-03-31T06:15:23.316Z",
+    "days": 3,
+    "absenceType": "ANNUAL_LEAVE",
+    "employee": {
+      "firstName": "Alexi",
+      "lastName": "Schramm",
+      "id": "8be1c549-fb91-4c8f-9cfe-5b5c017f26bf"
+    },
+    "approved": true
+  },
+  {
+    "id": 7,
+    "startDate": "2021-10-19T06:48:24.862Z",
+    "days": 0,
+    "absenceType": "ANNUAL_LEAVE",
+    "employee": {
+      "firstName": "Alexi",
+      "lastName": "Schramm",
+      "id": "8be1c549-fb91-4c8f-9cfe-5b5c017f26bf"
+    },
+    "approved": true
+  },
+  {
+    "id": 10,
+    "startDate": "2020-04-19T03:02:11.615Z",
+    "days": 13,
+    "absenceType": "ANNUAL_LEAVE",
+    "employee": {
+      "firstName": "Raniya",
+      "lastName": "Otte",
+      "id": "e10058e4-3383-466b-91d8-1ea5bf1acf0f"
+    },
+    "approved": false
+  },
+  {
+    "id": 15,
+    "startDate": "2023-12-25T14:19:38.910Z",
+    "days": 11,
+    "absenceType": "MEDICAL",
+    "employee": {
+      "firstName": "Reuben",
+      "lastName": "Keene",
+      "id": "8c6d90a5-6636-46f9-93de-daa172b7496f"
+    },
+    "approved": true
+  }
+]

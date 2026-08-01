@@ -1,0 +1,15 @@
+
+[
+  {
+    "id": 15,
+    "startDate": "2023-12-25T14:19:38.910Z",
+    "days": 11,
+    "absenceType": "COMPASSIONATE",
+    "employee": {
+      "firstName": "Reuben",
+      "lastName": "Keene",
+      "id": "8c6d90a5-6636-46f9-93de-daa172b7496f"
+    },
+    "approved": true
+  }
+]
