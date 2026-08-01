@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct Absence: Decodable, Identifiable {
+struct Absence: Decodable, Identifiable, Equatable{
     let id: Int
     let startDate: Date
     let days: Int
