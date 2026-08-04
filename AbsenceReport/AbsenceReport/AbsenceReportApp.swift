@@ -11,7 +11,11 @@ import SwiftUI
 struct AbsenceReportApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            AbsenceListView(
+                viewModel: AbsenceListViewModel(
+                    service: AbsenceService(baseURL: AppEnvironment.baseURL)
+                )
+            )
         }
     }
 }
