@@ -10,12 +10,15 @@ import SwiftUI
 struct AbsenceRow: View {
     let absence: Absence
     let hasConflict: Bool
+    var showsEmployeeName: Bool = true
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             
-            Text(absence.employee.fullName)
-                .font(.headline)
+            if showsEmployeeName {
+                Text(absence.employee.fullName)
+                    .font(.headline)
+            }
             
             Text(
                 absence.startDate.formattedRange(endDate: absence.endDate)
@@ -38,5 +41,6 @@ struct AbsenceRow: View {
                 .font(.caption)
         }
         .padding(.vertical, 4)
+        
     }
 }

@@ -14,6 +14,10 @@ enum ViewState: Equatable {
     case loaded([Absence])
     case empty
     case failed(String)
+    
+    var isLoaded: Bool {
+        if case .loaded = self { true } else { false }
+    }
 }
 
 enum SortOption: CaseIterable, Identifiable {
@@ -99,7 +103,8 @@ final class AbsenceListViewModel {
     // MARK: - Actions
     
     func load() async {
-        state = .loading
+        let previousState = state
+        if !state.isLoaded { state = .loading }
         
         do {
             let absences = try await service.fetchAbsences()
@@ -109,9 +114,10 @@ final class AbsenceListViewModel {
             } else {
                 state = .loaded(absences)
                 
-                conflicts = [:]
                 await loadConflicts(for: absences)
             }
+        } catch is CancellationError {
+            state = previousState
         } catch {
             state = .failed(error.localizedDescription)
         }
@@ -119,13 +125,13 @@ final class AbsenceListViewModel {
     
     private func loadConflicts(for absences: [Absence]) async {
         let service = self.service
-
+        
         var loadedConflicts: [Int: Bool] = [:]
-
+        
         await withTaskGroup(of: (Int, Bool)?.self) { group in
             for absence in absences {
                 let id = absence.id
-
+                
                 group.addTask {
                     do {
                         let hasConflict = try await service.fetchConflict(for: id)
@@ -135,14 +141,24 @@ final class AbsenceListViewModel {
                     }
                 }
             }
-
+            
             for await result in group {
                 if let (id, hasConflict) = result {
                     loadedConflicts[id] = hasConflict
                 }
             }
         }
-
+        
         conflicts = loadedConflicts
+    }
+    
+    func absences(for employee: Employee) -> [Absence] {
+        guard case let .loaded(absences) = state else {
+            return []
+        }
+        
+        return absences
+            .filter { $0.employee.id == employee.id }
+            .sorted { $0.startDate < $1.startDate }
     }
 }

@@ -48,7 +48,21 @@ struct AbsenceListView: View {
             
         case .loaded:
             List(viewModel.sortedAbsences) { absence in
-                AbsenceRow(absence: absence, hasConflict: viewModel.conflicts[absence.id] ?? false)
+                NavigationLink {
+                    EmployeeAbsencesView(
+                        employee: absence.employee,
+                        absences: viewModel.absences(for: absence.employee),
+                        conflicts: viewModel.conflicts
+                    )
+                } label: {
+                    AbsenceRow(
+                        absence: absence,
+                        hasConflict: viewModel.conflicts[absence.id] ?? false
+                    )
+                }
+            }
+            .refreshable {
+                await viewModel.load()
             }
             
         case .empty:

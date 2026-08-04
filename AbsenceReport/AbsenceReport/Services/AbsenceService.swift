@@ -13,10 +13,10 @@ protocol AbsenceServiceProtocol: Sendable {
 }
 
 struct AbsenceService: AbsenceServiceProtocol {
-
+    
     private let session: URLSession
     private let baseURL: URL
-
+    
     init(baseURL: URL, session: URLSession = .shared) {
         self.baseURL = baseURL
         self.session = session
@@ -27,37 +27,40 @@ struct AbsenceService: AbsenceServiceProtocol {
             from: baseURL.appending(path: "absences")
         )
     }
-
+    
     func fetchConflict(for absenceID: Int) async throws -> Bool {
         let conflictURL = baseURL.appending(path: "conflict")
             .appending(path: "\(absenceID)")
-
+        
         let response = try await fetch(ConflictResponse.self, from: conflictURL)
         return response.conflicts
     }
-
+    
     private func fetch<T: Decodable>(
         _ type: T.Type,
         from url: URL
     ) async throws -> T {
-
+        
         let data: Data
         let response: URLResponse
-
+        
         do {
             (data, response) = try await session.data(from: url)
         } catch {
+            if let urlError = error as? URLError, urlError.code == .cancelled {
+                throw CancellationError()
+            }
             throw AbsenceError.transportFailure(error)
         }
-
+        
         guard let httpResponse = response as? HTTPURLResponse else {
             throw AbsenceError.invalidResponse
         }
-
+        
         guard (200..<300).contains(httpResponse.statusCode) else {
             throw AbsenceError.badStatus(httpResponse.statusCode)
         }
-
+        
         do {
             return try JSONDecoder.absenceDecoder.decode(
                 T.self,
