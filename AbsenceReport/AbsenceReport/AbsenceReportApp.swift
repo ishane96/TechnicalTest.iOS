@@ -13,9 +13,17 @@ struct AbsenceReportApp: App {
         WindowGroup {
             AbsenceListView(
                 viewModel: AbsenceListViewModel(
-                    service: AbsenceService(baseURL: AppEnvironment.baseURL)
+                    service: Self.service
                 )
             )
         }
     }
+    private static var service: AbsenceServiceProtocol {
+           #if DEBUG
+           if ProcessInfo.processInfo.arguments.contains("-uiTesting") {
+               return StubAbsenceService()
+           }
+           #endif
+           return AbsenceService(baseURL: AppEnvironment.baseURL)
+       }
 }

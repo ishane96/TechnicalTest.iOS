@@ -41,6 +41,7 @@ struct AbsenceRow: View {
                 .font(.caption)
         }
         .padding(.vertical, 4)
+        .accessibilityElement(children: .combine)
         
     }
 }

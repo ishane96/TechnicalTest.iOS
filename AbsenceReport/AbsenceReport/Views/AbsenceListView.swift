@@ -30,6 +30,7 @@ struct AbsenceListView: View {
                             }
                         } label: {
                             Label("Sort", systemImage: "arrow.up.arrow.down")
+                                .accessibilityIdentifier("sortButton")
                         }
                     }
                 }
@@ -60,10 +61,12 @@ struct AbsenceListView: View {
                         hasConflict: viewModel.conflicts[absence.id] ?? false
                     )
                 }
+                .accessibilityIdentifier("absenceRow_\(absence.id)")
             }
             .refreshable {
                 await viewModel.load()
             }
+            .accessibilityIdentifier("absenceList")
             
         case .empty:
             ContentUnavailableView(

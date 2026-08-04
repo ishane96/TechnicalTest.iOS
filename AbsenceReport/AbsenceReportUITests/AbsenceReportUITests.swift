@@ -8,34 +8,67 @@
 import XCTest
 
 final class AbsenceReportUITests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
-    }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
-
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
+    
+    private func launchApp() -> XCUIApplication {
         let app = XCUIApplication()
+        app.launchArguments = ["-uiTesting"]
         app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        return app
     }
-
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
+    
+    
+    func test_absenceList_populates() {
+        let app = launchApp()
+        
+        let list = app.collectionViews["absenceList"]
+        
+        XCTAssertTrue(
+            list.waitForExistence(timeout: 5)
+        )
+        
+        let rows = list.cells
+        
+        XCTAssertEqual(
+            rows.count,
+            4
+        )
+    }
+    
+    func test_sorting_changesOrder() {
+        let app = launchApp()
+        
+        let list = app.collectionViews["absenceList"]
+        
+        XCTAssertTrue(
+            list.waitForExistence(timeout: 5)
+        )
+        
+        let firstRowBefore = list.buttons.element(boundBy: 0).label
+        app.buttons["sortButton"].tap()
+        
+        let sortOption = app.buttons["Start date (latest first)"]
+        
+        XCTAssertTrue(
+            sortOption.waitForExistence(timeout: 3)
+        )
+        
+        sortOption.tap()
+        
+        let firstRowAfter = list.buttons.element(boundBy: 0).label
+        
+        XCTAssertNotEqual(
+            firstRowBefore,
+            firstRowAfter
+        )
+    }
+    
+    func test_conflictBadge_isDisplayed() {
+        let app = launchApp()
+        
+        XCTAssertTrue(
+            app.staticTexts["Conflict"]
+                .waitForExistence(timeout: 5)
+        )
     }
 }
