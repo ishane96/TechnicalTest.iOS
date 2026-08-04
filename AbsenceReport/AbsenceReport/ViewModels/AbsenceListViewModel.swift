@@ -110,9 +110,39 @@ final class AbsenceListViewModel {
                 state = .loaded(absences)
                 
                 conflicts = [:]
+                await loadConflicts(for: absences)
             }
         } catch {
             state = .failed(error.localizedDescription)
         }
+    }
+    
+    private func loadConflicts(for absences: [Absence]) async {
+        let service = self.service
+
+        var loadedConflicts: [Int: Bool] = [:]
+
+        await withTaskGroup(of: (Int, Bool)?.self) { group in
+            for absence in absences {
+                let id = absence.id
+
+                group.addTask {
+                    do {
+                        let hasConflict = try await service.fetchConflict(for: id)
+                        return (id, hasConflict)
+                    } catch {
+                        return nil
+                    }
+                }
+            }
+
+            for await result in group {
+                if let (id, hasConflict) = result {
+                    loadedConflicts[id] = hasConflict
+                }
+            }
+        }
+
+        conflicts = loadedConflicts
     }
 }

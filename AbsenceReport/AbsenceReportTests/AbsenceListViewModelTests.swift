@@ -122,4 +122,24 @@ final class AbsenceListViewModelTests: XCTestCase {
 
         XCTAssertTrue(viewModel.sortedAbsences.isEmpty)
     }
+    
+    func test_load_whenConflictRequestsFail_stillLoadsAbsences() async throws {
+        let fixtures = try FixtureLoader.loadAbsences()
+        
+        let service = MockAbsenceService(
+            absences: fixtures,
+            conflictError: TestError.network
+        )
+
+        let viewModel = AbsenceListViewModel(service: service)
+
+        await viewModel.load()
+
+        guard case let .loaded(result) = viewModel.state else {
+              return XCTFail("Expected loaded state")
+          }
+
+          XCTAssertEqual(result.count, fixtures.count)
+          XCTAssertTrue(viewModel.conflicts.isEmpty)
+    }
 }

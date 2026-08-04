@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AbsenceRow: View {
     let absence: Absence
+    let hasConflict: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
@@ -21,8 +22,17 @@ struct AbsenceRow: View {
             )
             .font(.subheadline)
             
-            Text(absence.absenceType.displayName)
-                .font(.subheadline)
+            HStack {
+                Text(absence.absenceType.displayName)
+                    .font(.subheadline)
+                
+                Spacer()
+                if hasConflict {
+                    Label("Conflict", systemImage: "exclamationmark.triangle.fill")
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
+            }
             
             Text(absence.approved ? "Approved" : "Pending")
                 .font(.caption)
